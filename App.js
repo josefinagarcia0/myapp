@@ -41,8 +41,8 @@ export default function App() {
       <View style={styles.listContainer}>
           {
             tasks.map((item) => (
-              <View style={styles.itemContainer}>
-                <Text style={styles.itemList} key={item.id}>{item.value}</Text>
+              <View key={item.id} style={styles.itemContainer}>
+                <Text style={styles.itemList}>{item.value}</Text>
               </View>
             ))
           }
