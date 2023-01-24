@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, TextInput, Button } from 'react-native';
+import { StyleSheet, Text, View, TextInput, Button, FlatList } from 'react-native';
 
 export default function App() {
 
@@ -24,6 +24,14 @@ export default function App() {
     setTask('')
   }
 
+  const renderItem = ({ item}) => (
+    <View style={styles.itemContainer}>
+      <Text style={styles.itemList}>{item.value}</Text>
+    </View>
+  )
+
+  const keyEstractor = (item) => item.id
+
   return (
     <View style={styles.container}>
       <View style={styles.inputContainer}>
@@ -38,15 +46,13 @@ export default function App() {
 
         <Button disabled={!task} title='Add' color='#626893' onPress={onHandlerSubmit} />
       </View>
-      <View style={styles.listContainer}>
-          {
-            tasks.map((item) => (
-              <View key={item.id} style={styles.itemContainer}>
-                <Text style={styles.itemList}>{item.value}</Text>
-              </View>
-            ))
-          }
-        </View>
+
+      <FlatList
+        data={tasks}
+        renderItem={renderItem}
+        keyExtractor={keyEstractor}
+        style={styles.listContainer}
+      />
     </View>
   );
 }
@@ -54,7 +60,7 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#ccc',
+    backgroundColor: '#fff',
   },
   inputContainer: {
     flexDirection: 'row',
