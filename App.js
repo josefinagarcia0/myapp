@@ -1,13 +1,14 @@
 import React, {useState} from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, TextInput, Button, FlatList } from 'react-native';
+import { StyleSheet, Text, View, TextInput, Button, FlatList, Modal, TouchableOpacity } from 'react-native';
 
 export default function App() {
 
   const [task, setTask] = useState('')
-
   /* creamos este evento para guardar lo que escribimos en el holder */
   const [tasks, setTasks] = useState([])
+  const [isModalVisible, setIsModalVisible] = useState(false)
+  const [selectedTask, setSelectedTask] = useState(null)
 
   const onHandlerChange = (text) => {
     setTask(text)
@@ -24,10 +25,15 @@ export default function App() {
     setTask('')
   }
 
+  const onHandlerModal = (item) => {
+    setIsModalVisible(!setIsModalVisible)
+    setSelectedTask(item)
+  }
+
   const renderItem = ({ item}) => (
-    <View style={styles.itemContainer}>
+    <TouchableOpacity style={styles.itemContainer} onPress={() => onHandlerModal(item)} >
       <Text style={styles.itemList}>{item.value}</Text>
-    </View>
+    </TouchableOpacity>
   )
 
   const keyEstractor = (item) => item.id
@@ -53,6 +59,10 @@ export default function App() {
         keyExtractor={keyEstractor}
         style={styles.listContainer}
       />
+
+      <Modal visible={isModalVisible} animationType='slide'>
+        <Text> se muestra el modal </Text>
+      </Modal>
     </View>
   );
 }
