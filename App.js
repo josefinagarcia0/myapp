@@ -26,7 +26,7 @@ export default function App() {
   }
 
   const onHandlerModal = (item) => {
-    setIsModalVisible(!setIsModalVisible)
+    setIsModalVisible(!isModalVisible)
     setSelectedTask(item)
   }
 
@@ -37,6 +37,16 @@ export default function App() {
   )
 
   const keyEstractor = (item) => item.id
+
+  const onHandlerCancel = () => {
+    setIsModalVisible(!isModalVisible)
+    setSelectedTask(null)
+  }
+
+  const onHandlerDelete = () => {
+    setTask((prevTaskList) => prevTaskList.filter((task) => task.id !== selectedTask.id))
+    setIsModalVisible(!isModalVisible)
+  }
 
   return (
     <View style={styles.container}>
@@ -61,8 +71,19 @@ export default function App() {
       />
 
       <Modal visible={isModalVisible} animationType='slide'>
-        <Text> se muestra el modal </Text>
+        <View style={styles.modalContainer}>
+          <Text style={styles.modalTitle}> Task Detail </Text>
+          <View style={styles.modalDetailContainer}>
+            <Text style={styles.modalDetailMessege}> You are deleting this item </Text>
+            <Text style={styles.selectedTask}> {selectedTask?.value} </Text>
+          </View>
+          <View style={styles.modalButtonContainer}>
+            <Button title='Cancel' color='#626893' onPress={onHandlerCancel} />
+            <Button title='Delete' color='red' onPress={onHandlerDelete} />
+          </View>
+        </View>
       </Modal>
+
     </View>
   );
 }
@@ -102,6 +123,39 @@ const styles = StyleSheet.create({
   itemList: {
     fontSize: 14,
     color: '#fff'
+  },
+  modalContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 50,
+    paddingVertical: 20
+  
+  },
+  modalTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 10
+  },
+  modalDetailContainer: {
+    paddingVertical: 20
+  },
+  modalDetailMessege: {
+    fontSize: 14,
+    color: '#212121'
+  },
+  selectedTask: {
+    fontSize: 14,
+    color: '#212121',
+    fontWeight: 'bold',
+    paddingVertical: 10, 
+    textAlign: 'center',
+    marginBottom: 20
+  },
+  modalButtonContainer: {
+    width: '70%',
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    marginHorizontal: 20
   }
 
 });
